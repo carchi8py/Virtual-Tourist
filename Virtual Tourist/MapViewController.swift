@@ -109,6 +109,26 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         return newPin
     }
     
+    // When an annotation is selected. Sequway to Photo view controller
+    func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!) {
+        let controller = self.storyboard?.instantiateViewControllerWithIdentifier("PhotoViewController") as! PhotoViewController
+        
+        let pinCount = pins.count
+        var i = 0
+        var index: Int = 0
+        
+        for i = 0; i < pinCount; i++ {
+            if view.annotation.coordinate.latitude == pins[i].latitude && view.annotation.coordinate.longitude == pins[i].longitude {
+                index = i
+            }
+        }
+        
+        controller.pin = pins[index]
+        
+        self.navigationController?.pushViewController(controller, animated: true)
+        mapView.deselectAnnotation(view.annotation, animated: true)
+    }
+    
     /***** Long Press Methods for UIGestureRecognizerDelegate *****/
     
     //If the long tap gesture is fired, create a new pin in the location of the 

@@ -54,5 +54,23 @@
             </objects>
             <point key="canvasLocation" x="1138" y="442"/>
         </scene>
+        <!--Photo View Controller-->
+        <scene sceneID="TnJ-Rc-OmD">
+            <objects>
+                <viewController storyboardIdentifier="PhotoViewController" id="9IK-2T-ZLU" customClass="PhotoViewController" customModule="Virtual_Tourist" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="azB-IM-V8X"/>
+                        <viewControllerLayoutGuide type="bottom" id="uKf-0h-fUI"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="P2N-zf-OzU">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zQR-aB-U7N" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1807" y="442"/>
+        </scene>
     </scenes>
 </document>
