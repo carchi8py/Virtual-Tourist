@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognizerDelegate {
 
@@ -24,6 +25,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         
         //Make view delegate the map
         self.mapView.delegate = self
+        
+        //Fetch all pins
+        pins = fetchAllPins()
+        
+        //Add pins to map
+        addAllPinsToMap()
         
         let longPress = UILongPressGestureRecognizer(target: self, action: "didLongTapMap:")
         longPress.delegate = self
@@ -49,6 +56,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
             let currentRegion = MKCoordinateRegionMake(centerCoordinate, span)
             println("restore")
             
+            //Add pins to map
+            addAllPinsToMap()
+            
             self.mapView.setRegion(currentRegion, animated: false)
         }
     }
@@ -59,12 +69,27 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     
     //Pin Functions
     func addAllPinsToMap() {
+        println("Placing pins on map")
+        println(pins)
         for pin in pins {
             var newPin = MKPointAnnotation()
             newPin.coordinate.latitude = pin.latitude
             newPin.coordinate.longitude = pin.longitude
             mapView.addAnnotation(newPin)
         }
+    }
+    
+    func fetchAllPins() -> [Pin] {
+        let error: NSErrorPointer = nil
+        //create the fetch request
+        let fetchRequest = NSFetchRequest(entityName: "Pin")
+        let results = sharedContext.executeFetchRequest(fetchRequest, error: error)
+        if error != nil {
+            println("WE have an error \(error)")
+            return [Pin]()
+        }
+        println("We have pins")
+        return results as! [Pin]
     }
     
     
@@ -105,6 +130,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         let pinToBeAdded = Pin(dictionary: dictionary, context: self.sharedContext)
         
         self.pins.append(pinToBeAdded)
+        
+        CoreDataStackManager.sharedInstance().saveContext()
+        
         //Add the pin to mapView
         var dropPin = MKPointAnnotation()
         dropPin.coordinate.latitude = pinToBeAdded.latitude
