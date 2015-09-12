@@ -21,7 +21,7 @@
             </objects>
             <point key="canvasLocation" x="436" y="440"/>
         </scene>
-        <!--Map View Controller-->
+        <!--Virtual Tourist-->
         <scene sceneID="dcQ-xF-WGm">
             <objects>
                 <viewController id="7je-q7-MUJ" customClass="MapViewController" customModule="Virtual_Tourist" customModuleProvider="target" sceneMemberID="viewController">
@@ -45,7 +45,7 @@
                             <constraint firstItem="nAF-Lt-agc" firstAttribute="top" secondItem="bZy-1S-qXJ" secondAttribute="topMargin" id="caL-Bf-vDR"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="uy2-ke-prg"/>
+                    <navigationItem key="navigationItem" title="Virtual Tourist" id="uy2-ke-prg"/>
                     <connections>
                         <outlet property="mapView" destination="nAF-Lt-agc" id="THL-6Y-65D"/>
                     </connections>
