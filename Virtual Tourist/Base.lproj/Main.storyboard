@@ -66,7 +66,22 @@
                     <view key="view" contentMode="scaleToFill" id="P2N-zf-OzU">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yyG-PU-Nsj">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="u5M-8D-A6y"/>
+                                    <barButtonItem title="New Collection" id="Gf0-VS-gG3"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="WTh-Hc-zDP"/>
+                                </items>
+                            </toolbar>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="uKf-0h-fUI" firstAttribute="top" secondItem="yyG-PU-Nsj" secondAttribute="bottom" id="Bcf-bE-OTe"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="yyG-PU-Nsj" secondAttribute="trailing" constant="-16" id="cTx-51-146"/>
+                            <constraint firstItem="yyG-PU-Nsj" firstAttribute="leading" secondItem="P2N-zf-OzU" secondAttribute="leadingMargin" constant="-16" id="kYX-x8-EcN"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zQR-aB-U7N" userLabel="First Responder" sceneMemberID="firstResponder"/>
