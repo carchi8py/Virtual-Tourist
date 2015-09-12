@@ -15,6 +15,7 @@
 		27FE44F91BA13DB7002EB04A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27FE44F71BA13DB7002EB04A /* LaunchScreen.xib */; };
 		27FE45051BA13DB7002EB04A /* Virtual_TouristTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FE45041BA13DB7002EB04A /* Virtual_TouristTests.swift */; };
 		27FE45111BA3C3A0002EB04A /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FE45101BA3C3A0002EB04A /* Pin.swift */; };
+		27FE45131BA3C7BF002EB04A /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FE45121BA3C7BF002EB04A /* Photo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,7 @@
 		27FE45031BA13DB7002EB04A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		27FE45041BA13DB7002EB04A /* Virtual_TouristTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Virtual_TouristTests.swift; sourceTree = "<group>"; };
 		27FE45101BA3C3A0002EB04A /* Pin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pin.swift; sourceTree = "<group>"; };
+		27FE45121BA3C7BF002EB04A /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				27FE45101BA3C3A0002EB04A /* Pin.swift */,
+				27FE45121BA3C7BF002EB04A /* Photo.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -238,6 +241,7 @@
 				27FE44EF1BA13DB7002EB04A /* Virtual_Tourist.xcdatamodeld in Sources */,
 				27FE44EC1BA13DB7002EB04A /* AppDelegate.swift in Sources */,
 				27FE45111BA3C3A0002EB04A /* Pin.swift in Sources */,
+				27FE45131BA3C7BF002EB04A /* Photo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
