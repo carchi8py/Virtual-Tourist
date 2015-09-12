@@ -48,6 +48,7 @@
                     <navigationItem key="navigationItem" title="Virtual Tourist" id="uy2-ke-prg"/>
                     <connections>
                         <outlet property="mapView" destination="nAF-Lt-agc" id="THL-6Y-65D"/>
+                        <segue destination="9IK-2T-ZLU" kind="show" id="iJF-dF-ARK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="coO-SP-kBg" userLabel="First Responder" sceneMemberID="firstResponder"/>
