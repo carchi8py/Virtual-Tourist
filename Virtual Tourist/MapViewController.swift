@@ -54,10 +54,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
             let centerCoordinate = CLLocationCoordinate2D(latitude: currentLatitude, longitude: currentLongitude)
             let span = MKCoordinateSpan(latitudeDelta: currentLatDelta, longitudeDelta: currentLongDelta)
             let currentRegion = MKCoordinateRegionMake(centerCoordinate, span)
-            println("restore")
-            
-            //Add pins to map
-            addAllPinsToMap()
             
             self.mapView.setRegion(currentRegion, animated: false)
         }
@@ -67,10 +63,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         CoreDataStackManager.sharedInstance().managedObjectContext!
         }()
     
-    //Pin Functions
+    /***** Pin Functions *****/
+    
+    //place all existing pin on to the map
     func addAllPinsToMap() {
-        println("Placing pins on map")
-        println(pins)
         for pin in pins {
             var newPin = MKPointAnnotation()
             newPin.coordinate.latitude = pin.latitude
@@ -79,30 +75,33 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         }
     }
     
+    //Grabs all pin saved in Core data
     func fetchAllPins() -> [Pin] {
         let error: NSErrorPointer = nil
         //create the fetch request
         let fetchRequest = NSFetchRequest(entityName: "Pin")
         let results = sharedContext.executeFetchRequest(fetchRequest, error: error)
+        //If there is an error return an empty list of pins
         if error != nil {
             println("WE have an error \(error)")
             return [Pin]()
         }
-        println("We have pins")
         return results as! [Pin]
     }
     
     
-    //Map View Methods from MKMapViewDeleate
+    /***** Map View Methods from MKMapViewDeleate *****/
     
+    //When the location on the map changes, save the location so we can reload from the last
+    //known location
     func mapView(mapView: MKMapView!, regionDidChangeAnimated animated: Bool) {
         self.defaults.setValue(self.mapView.region.center.latitude, forKeyPath: "currentLatitude")
         self.defaults.setValue(self.mapView.region.center.longitude, forKeyPath: "currentLongitude")
         self.defaults.setValue(self.mapView.region.span.latitudeDelta, forKeyPath: "currentLatDelta")
         self.defaults.setValue(self.mapView.region.span.longitudeDelta, forKeyPath: "currentLongDelta")
-        println("Saved")
     }
     
+    //Create a new pin
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
         var newPin = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "Pin1")
         newPin.animatesDrop = true
@@ -110,10 +109,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         return newPin
     }
     
-    // Long Press Methods for UIGestureRecognizerDelegate
+    /***** Long Press Methods for UIGestureRecognizerDelegate *****/
     
+    //If the long tap gesture is fired, create a new pin in the location of the 
+    // Long tap, and store so we can retreive it later.
     func didLongTapMap(gestureRecognizer: UIGestureRecognizer) {
-        //Get the spot that was tapped.
+        //Get the location that was tapped
         let tapPoint: CGPoint = gestureRecognizer.locationInView(mapView)
         let touchMapCoordinate: CLLocationCoordinate2D = mapView.convertPoint(tapPoint, toCoordinateFromView: mapView)
         
@@ -131,6 +132,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         
         self.pins.append(pinToBeAdded)
         
+        //Save the pin in to core data so that it can be recreated in the app is quit
         CoreDataStackManager.sharedInstance().saveContext()
         
         //Add the pin to mapView
