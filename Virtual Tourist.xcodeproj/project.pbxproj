@@ -79,12 +79,8 @@
 		27FE44E81BA13DB7002EB04A /* Virtual Tourist */ = {
 			isa = PBXGroup;
 			children = (
+				27FE450E1BA3BA57002EB04A /* Controllers */,
 				27FE44EB1BA13DB7002EB04A /* AppDelegate.swift */,
-				27FE44F01BA13DB7002EB04A /* MapViewController.swift */,
-				27FE44F21BA13DB7002EB04A /* Main.storyboard */,
-				27FE44F51BA13DB7002EB04A /* Images.xcassets */,
-				27FE44F71BA13DB7002EB04A /* LaunchScreen.xib */,
-				27FE44ED1BA13DB7002EB04A /* Virtual_Tourist.xcdatamodeld */,
 				27FE44E91BA13DB7002EB04A /* Supporting Files */,
 			);
 			path = "Virtual Tourist";
@@ -93,6 +89,10 @@
 		27FE44E91BA13DB7002EB04A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				27FE44F71BA13DB7002EB04A /* LaunchScreen.xib */,
+				27FE44F21BA13DB7002EB04A /* Main.storyboard */,
+				27FE44F51BA13DB7002EB04A /* Images.xcassets */,
+				27FE44ED1BA13DB7002EB04A /* Virtual_Tourist.xcdatamodeld */,
 				27FE44EA1BA13DB7002EB04A /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -113,6 +113,14 @@
 				27FE45031BA13DB7002EB04A /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		27FE450E1BA3BA57002EB04A /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				27FE44F01BA13DB7002EB04A /* MapViewController.swift */,
+			);
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

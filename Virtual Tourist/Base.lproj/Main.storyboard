@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="NoB-BS-RFb">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -31,9 +32,23 @@
                     <view key="view" contentMode="scaleToFill" id="bZy-1S-qXJ">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="nAF-Lt-agc">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </mapView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="nAF-Lt-agc" firstAttribute="leading" secondItem="bZy-1S-qXJ" secondAttribute="leadingMargin" constant="-16" id="2Je-Kr-3cs"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="nAF-Lt-agc" secondAttribute="trailing" constant="-16" id="2qA-jf-zcV"/>
+                            <constraint firstItem="hxc-sK-SoH" firstAttribute="top" secondItem="nAF-Lt-agc" secondAttribute="bottom" id="LeE-Vs-mPG"/>
+                            <constraint firstItem="nAF-Lt-agc" firstAttribute="top" secondItem="bZy-1S-qXJ" secondAttribute="topMargin" id="caL-Bf-vDR"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="uy2-ke-prg"/>
+                    <connections>
+                        <outlet property="mapView" destination="nAF-Lt-agc" id="THL-6Y-65D"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="coO-SP-kBg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
