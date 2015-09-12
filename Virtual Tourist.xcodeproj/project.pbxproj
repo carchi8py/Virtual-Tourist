@@ -79,8 +79,8 @@
 		27FE44E81BA13DB7002EB04A /* Virtual Tourist */ = {
 			isa = PBXGroup;
 			children = (
-				27FE450E1BA3BA57002EB04A /* Controllers */,
 				27FE44EB1BA13DB7002EB04A /* AppDelegate.swift */,
+				27FE450E1BA3BA57002EB04A /* Controllers */,
 				27FE44E91BA13DB7002EB04A /* Supporting Files */,
 			);
 			path = "Virtual Tourist";
@@ -423,6 +423,7 @@
 				27FE450A1BA13DB7002EB04A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		27FE450B1BA13DB7002EB04A /* Build configuration list for PBXNativeTarget "Virtual TouristTests" */ = {
 			isa = XCConfigurationList;
@@ -431,6 +432,7 @@
 				27FE450D1BA13DB7002EB04A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
