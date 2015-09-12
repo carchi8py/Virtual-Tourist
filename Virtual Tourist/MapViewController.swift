@@ -30,6 +30,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
     
     override func viewWillAppear(animated: Bool) {
+        //Restore the map to the last location saved by regionDidChange
         if let currentLatitude = self.defaults.valueForKey("currentLatitude") as? Double {
             let currentLongitude: Double = self.defaults.valueForKey("currentLongitude") as! Double
             let currentLatDelta: Double = self.defaults.valueForKey("currentLatDelta") as! Double

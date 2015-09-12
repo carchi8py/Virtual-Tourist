@@ -14,6 +14,7 @@
 		27FE44F61BA13DB7002EB04A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27FE44F51BA13DB7002EB04A /* Images.xcassets */; };
 		27FE44F91BA13DB7002EB04A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27FE44F71BA13DB7002EB04A /* LaunchScreen.xib */; };
 		27FE45051BA13DB7002EB04A /* Virtual_TouristTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FE45041BA13DB7002EB04A /* Virtual_TouristTests.swift */; };
+		27FE45111BA3C3A0002EB04A /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FE45101BA3C3A0002EB04A /* Pin.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,7 @@
 		27FE44FE1BA13DB7002EB04A /* Virtual TouristTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Virtual TouristTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		27FE45031BA13DB7002EB04A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		27FE45041BA13DB7002EB04A /* Virtual_TouristTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Virtual_TouristTests.swift; sourceTree = "<group>"; };
+		27FE45101BA3C3A0002EB04A /* Pin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pin.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 			children = (
 				27FE44EB1BA13DB7002EB04A /* AppDelegate.swift */,
 				27FE450E1BA3BA57002EB04A /* Controllers */,
+				27FE450F1BA3C381002EB04A /* Model */,
 				27FE44E91BA13DB7002EB04A /* Supporting Files */,
 			);
 			path = "Virtual Tourist";
@@ -121,6 +124,14 @@
 				27FE44F01BA13DB7002EB04A /* MapViewController.swift */,
 			);
 			name = Controllers;
+			sourceTree = "<group>";
+		};
+		27FE450F1BA3C381002EB04A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				27FE45101BA3C3A0002EB04A /* Pin.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -226,6 +237,7 @@
 				27FE44F11BA13DB7002EB04A /* MapViewController.swift in Sources */,
 				27FE44EF1BA13DB7002EB04A /* Virtual_Tourist.xcdatamodeld in Sources */,
 				27FE44EC1BA13DB7002EB04A /* AppDelegate.swift in Sources */,
+				27FE45111BA3C3A0002EB04A /* Pin.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
