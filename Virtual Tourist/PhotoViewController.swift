@@ -27,12 +27,14 @@ class PhotoViewController: UIViewController {
     
     //Set the location of the map to the selected Pin from the Map View Page
     func setMapLocation(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
-        let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.01))
+        //Set zoom level to .005 which is close enough to see a few blocks
+        let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
         
         let newPin = MKPointAnnotation()
         newPin.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         
         mapView.addAnnotation(newPin)
+        mapView.mapType = MKMapType.Hybrid
         mapView.setRegion(region, animated: true)
     }
     
