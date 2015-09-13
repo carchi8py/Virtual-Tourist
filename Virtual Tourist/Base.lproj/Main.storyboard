@@ -114,6 +114,9 @@
                             <constraint firstItem="lfi-mp-UaN" firstAttribute="leading" secondItem="P2N-zf-OzU" secondAttribute="leadingMargin" constant="-16" id="xml-FU-5Ou"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="mapView" destination="lfi-mp-UaN" id="FfS-kK-jRG"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zQR-aB-U7N" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
