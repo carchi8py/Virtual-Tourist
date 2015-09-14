@@ -51,7 +51,7 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
     lazy var fetchedResultsController: NSFetchedResultsController = {
         let fetchRequest = NSFetchRequest(entityName: "Photo")
         
-        fetchRequest.sortDescriptors = []
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "photoTitle", ascending: true)]
         fetchRequest.predicate = NSPredicate(format: "pin == %@", self.pin)
         
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
@@ -107,6 +107,7 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
             }
             }, completion: { completed -> Void in
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.collectionButton.enabled = true
                 })
         })
     }
@@ -119,6 +120,7 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
         if let localImage = photo.image {
             image = localImage
         } else {
+            println(photo)
             let task = Client.sharedInstance().taskForImage(photo.photoUrl, completionHandler: {(imageData, downloadError) -> Void in
                 if let data = imageData {
                     let image = UIImage(data: data)
@@ -156,6 +158,7 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let CellIdentifier = "PhotoCell"
+        println("Hin collection view")
         
         let photo = fetchedResultsController.objectAtIndexPath(indexPath) as! Photo
         
@@ -187,7 +190,6 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
             (success, dictionary, errorString) -> Void in
             
             if success {
-                println("We got photos")
                 let photosDictionary = dictionary!
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     var photos = photosDictionary.map() { ( dictionary: [String: AnyObject]) -> Photo in

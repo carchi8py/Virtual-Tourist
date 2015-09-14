@@ -16,7 +16,7 @@ class Photo: NSManagedObject {
     struct Keys {
         static let PhotoID = "id"
         static let PhotoTitle = "title"
-        static let PhotoUrl = "url"
+        static let photoUrl = "url_m"
     }
     
     @NSManaged var photoID: String
@@ -37,13 +37,14 @@ class Photo: NSManagedObject {
         // Dictionary
         photoID = dictionary[Keys.PhotoID] as! String
         photoTitle = dictionary[Keys.PhotoTitle] as! String
-        photoUrl = dictionary[Keys.PhotoUrl] as! String
+        photoUrl = dictionary[Keys.photoUrl] as! String
     }
     
     var image: UIImage? {
         get {
             return Client.Caches.imageCache.imageWithIdentifier(photoID)
         } set {
-            Client.Caches.imageCache.storeImage(image, identifier: photoID)        }
+            Client.Caches.imageCache.storeImage(image, identifier: photoID)
+        }
     }
 }
