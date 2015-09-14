@@ -39,4 +39,11 @@ class Photo: NSManagedObject {
         photoTitle = dictionary[Keys.PhotoTitle] as! String
         photoUrl = dictionary[Keys.PhotoUrl] as! String
     }
+    
+    var image: UIImage? {
+        get {
+            return Client.Caches.imageCache.imageWithIdentifier(photoID)
+        } set {
+            Client.Caches.imageCache.storeImage(image, identifier: photoID)        }
+    }
 }

@@ -140,6 +140,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="collectionButton" destination="Gf0-VS-gG3" id="cfn-tJ-TSq"/>
+                        <outlet property="collectionView" destination="Kg2-j1-97Z" id="a2W-ag-4kG"/>
                         <outlet property="mapView" destination="lfi-mp-UaN" id="FfS-kK-jRG"/>
                     </connections>
                 </viewController>

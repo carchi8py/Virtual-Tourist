@@ -59,6 +59,12 @@ class Client: NSObject {
         return task
     }
     
+    /***** Image Cache *****/
+    
+    struct Caches {
+        static let imageCache = ImageCache()
+    }
+    
     /***** Helper Functions *****/
     
     /* Helper: Given raw JSON, return a usable Foundation object */
