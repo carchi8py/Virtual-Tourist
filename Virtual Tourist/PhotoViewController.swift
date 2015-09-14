@@ -33,9 +33,12 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
     }
     
     override func viewWillAppear(animated: Bool) {
+        println("Did we hit error")
         super.viewWillAppear(animated)
+        println("After super")
         
         if pin.photos.isEmpty {
+            println("Here")
             Client.sharedInstance().count = 0
             self.collectionButton.enabled = false
             getImages()
@@ -52,7 +55,7 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
         let fetchRequest = NSFetchRequest(entityName: "Photo")
         
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "photoTitle", ascending: true)]
-        fetchRequest.predicate = NSPredicate(format: "pin == %@", self.pin)
+        //fetchRequest.predicate = NSPredicate(format: "pin == %@", self.pin)
         
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
         return fetchedResultsController
@@ -69,6 +72,7 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         //Setting the left and right inset for cells
         let leftRightInset = self.view.frame.size.width / 57.0
+        println(leftRightInset)
         return UIEdgeInsetsMake(0, leftRightInset, 0, leftRightInset)
     }
     
@@ -120,7 +124,6 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
         if let localImage = photo.image {
             image = localImage
         } else {
-            println(photo)
             let task = Client.sharedInstance().taskForImage(photo.photoUrl, completionHandler: {(imageData, downloadError) -> Void in
                 if let data = imageData {
                     let image = UIImage(data: data)
@@ -153,12 +156,12 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let sectionInfo = self.fetchedResultsController.sections![section] as! NSFetchedResultsSectionInfo
         
+        println("number Of Cells: \(sectionInfo.numberOfObjects)")
         return sectionInfo.numberOfObjects
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let CellIdentifier = "PhotoCell"
-        println("Hin collection view")
         
         let photo = fetchedResultsController.objectAtIndexPath(indexPath) as! Photo
         
@@ -183,6 +186,7 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
     /***** Getting images from Flickr *****/
     
     func getImages() {
+        println("Error here")
         let latitude = pin.latitude
         let longitude = pin.longitude
         
