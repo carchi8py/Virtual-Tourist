@@ -36,6 +36,13 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
         println("Did we hit error")
         super.viewWillAppear(animated)
         println("After super")
+        println("before pin")
+        println(pin)
+        println("after pin")
+        println(pin.photos)
+        println("after photos")
+        print(pin.photos.isEmpty)
+        print("blabla")
         
         if pin.photos.isEmpty {
             println("Here")
