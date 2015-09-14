@@ -9,6 +9,7 @@
 import UIKit
 import MapKit
 import Foundation
+import CoreData
 
 class PhotoViewController: UIViewController {
     var pin: Pin!
@@ -22,6 +23,11 @@ class PhotoViewController: UIViewController {
         setMapLocation(pin.latitude, longitude: pin.longitude)
     }
     
+    /***** Core Data *****/
+    
+    lazy var sharedContext = {
+        CoreDataStackManager.sharedInstance().managedObjectContext!
+        }()
     
     /***** Map Function *****/
     
