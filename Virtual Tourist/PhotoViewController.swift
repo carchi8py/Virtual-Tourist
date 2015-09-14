@@ -17,8 +17,10 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
     @IBOutlet weak var collectionButton: UIBarButtonItem!
     
     var pin: Pin!
-    
     var imagesLoaded = 0
+    
+    var currentIndex: NSIndexPath?
+    var changes = [(NSFetchedResultsChangeType, NSIndexPath)]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +30,16 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
         
         fetchedResultsController.performFetch(nil)
         fetchedResultsController.delegate = self
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if pin.photos.isEmpty {
+            Client.sharedInstance().count = 0
+            self.collectionButton.enabled = false
+            getImages()
+        }
     }
     
     /***** Core Data *****/
@@ -46,6 +58,59 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
         return fetchedResultsController
     }()
     
+    /***** Collection Delegate Flow functions *****/
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        //Changing the size of the cell depending on the width of the device
+        let imageDimension = self.view.frame.size.width / 3.33
+        return CGSizeMake(imageDimension, imageDimension)
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        //Setting the left and right inset for cells
+        let leftRightInset = self.view.frame.size.width / 57.0
+        return UIEdgeInsetsMake(0, leftRightInset, 0, leftRightInset)
+    }
+    
+    /***** Collection Delegate functions *****/
+    
+    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+        changes = []
+    }
+    
+    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+        
+    }
+    
+    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+        switch type {
+        case .Insert:
+            changes.append((.Insert, newIndexPath!))
+        case .Delete:
+            changes.append((.Delete, indexPath!))
+        default:
+            return
+        }
+    }
+    
+    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        collectionView.performBatchUpdates({ () -> Void in
+            for (type, index) in self.changes {
+                switch type {
+                case .Insert:
+                    self.collectionView.insertItemsAtIndexPaths([index])
+                case .Delete:
+                    self.collectionView.deleteItemsAtIndexPaths([index])
+                default:
+                    continue
+                }
+            }
+            }, completion: { completed -> Void in
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                })
+        })
+    }
+    
     /***** Configure Cell *****/
     
     func configureCell(cell: PhotoCell, photo: Photo, indexPath: NSIndexPath) {
@@ -54,7 +119,6 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
         if let localImage = photo.image {
             image = localImage
         } else {
-            //Download the image from flickr
             let task = Client.sharedInstance().taskForImage(photo.photoUrl, completionHandler: {(imageData, downloadError) -> Void in
                 if let data = imageData {
                     let image = UIImage(data: data)
@@ -100,6 +164,57 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
         configureCell(cell, photo: photo, indexPath: indexPath)
         
         return cell
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        currentIndex = indexPath
+        var alertControllerForDeletingPhoto: UIAlertController
+        
+        alertControllerForDeletingPhoto = UIAlertController(title: "This photo will be deleted from the album.", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        alertControllerForDeletingPhoto.addAction(UIAlertAction(title: "Delete Photo", style: UIAlertActionStyle.Destructive, handler: deletePhoto))
+        alertControllerForDeletingPhoto.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
+        
+        self.presentViewController(alertControllerForDeletingPhoto, animated: true, completion: nil)
+    }
+    
+    /***** Getting images from Flickr *****/
+    
+    func getImages() {
+        let latitude = pin.latitude
+        let longitude = pin.longitude
+        
+        Client.sharedInstance().getImageFromFlicker(latitude, longitude: longitude) {
+            (success, dictionary, errorString) -> Void in
+            
+            if success {
+                println("We got photos")
+                let photosDictionary = dictionary!
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    var photos = photosDictionary.map() { ( dictionary: [String: AnyObject]) -> Photo in
+                        let photo = Photo(dictionary: dictionary, context: self.sharedContext)
+                        photo.pin = self.pin
+                        CoreDataStackManager.sharedInstance().saveContext()
+                        return photo
+                    }
+                })
+            } else {
+                var alert = UIAlertController(title: "Failed to get images", message: "Was unable to get images from Flickr", preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
+                self.presentViewController(alert, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    /***** Helper Function *****/
+    
+    func deletePhoto(sender: UIAlertAction!) -> Void {
+        let index = currentIndex
+        
+        let photo = self.fetchedResultsController.objectAtIndexPath(index!) as! Photo
+        Client.Caches.imageCache.clearImage(photo.photoID)
+        self.sharedContext.deleteObject(photo)
+        CoreDataStackManager.sharedInstance().saveContext()
+        self.collectionView.reloadData()
     }
     
     
