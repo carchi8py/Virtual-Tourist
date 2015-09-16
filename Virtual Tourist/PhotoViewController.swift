@@ -35,6 +35,9 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        //Show nav bar
+        self.navigationController?.navigationBarHidden = false
+        
         if pin.photos.isEmpty {
             Client.sharedInstance().count = 0
             self.collectionButton.enabled = false

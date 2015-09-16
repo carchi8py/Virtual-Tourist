@@ -45,6 +45,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     }
     
     override func viewWillAppear(animated: Bool) {
+        //Hide nav bar
+        self.navigationController?.navigationBarHidden = true
         //Restore the map to the last location saved by regionDidChange
         if let currentLatitude = self.defaults.valueForKey("currentLatitude") as? Double {
             let currentLongitude: Double = self.defaults.valueForKey("currentLongitude") as! Double
