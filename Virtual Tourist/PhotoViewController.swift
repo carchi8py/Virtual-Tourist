@@ -128,12 +128,15 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
     /***** Configure Cell *****/
     
     func configureCell(cell: PhotoCell, photo: Photo, indexPath: NSIndexPath) {
+        cell.imageActivity.hidden = false
+        cell.imageActivity.startAnimating()
         var image = UIImage()
         
         if let localImage = photo.image {
+            cell.imageActivity.stopAnimating()
+            cell.imageActivity.hidden = true
             image = localImage
         } else {
-            cell.imageActivity.startAnimating()
             let task = Client.sharedInstance().taskForImage(photo.photoUrl, completionHandler: {(imageData, downloadError) -> Void in
                 if let data = imageData {
                     let image = UIImage(data: data)

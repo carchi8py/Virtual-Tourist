@@ -38,12 +38,10 @@ extension Client {
             } else {
                 if let photoDic = JSONResults.valueForKey(JSONResponseKeys.Photos) as? [String: AnyObject] {
                     if let photos = photoDic[JSONResponseKeys.Photo] as? [[String:AnyObject]] {
-                        println("W00t")
+                        println("The number of photos: \(photos.count)")
                         if (photos.count < 24) {
-                            println("HI")
                             completionHandler(success: false, dictionary: nil, errorString: "Could not complete request \(error)")
                         } else {
-                            println(photos.count)
                             var resultsDic = [[String:AnyObject]]()
                         
                             do {

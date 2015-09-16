@@ -78,7 +78,6 @@ class Client: NSObject {
             print("Error in json")
             completionHandler(result: nil, error: error)
         } else {
-            print("We are good in json")
             completionHandler(result: parsedResult, error: nil)
         }
     }
