@@ -42,6 +42,17 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
         }
     }
     
+    @IBAction func collectionButtonTouched(sender: UIBarButtonItem) {
+        self.imagesLoaded = 0
+        self.collectionButton.enabled = false
+        if let photos = self.fetchedResultsController.fetchedObjects as? [Photo] {
+            for photo in photos {
+                Client.Caches.imageCache.clearImage(photo.photoID)
+                self.sharedContext.deleteObject(photo)
+            }
+        }
+        getImages()
+    }
     /***** Core Data *****/
     
     lazy var sharedContext = {
@@ -120,6 +131,7 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
         if let localImage = photo.image {
             image = localImage
         } else {
+            cell.imageActivity.startAnimating()
             let task = Client.sharedInstance().taskForImage(photo.photoUrl, completionHandler: {(imageData, downloadError) -> Void in
                 if let data = imageData {
                     let image = UIImage(data: data)
@@ -127,6 +139,7 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
                     
                     dispatch_async(dispatch_get_main_queue()) { () -> Void in
                         cell.imageActivity.stopAnimating()
+                        cell.imageActivity.hidden = true
                         cell.image.image = image
                         self.imagesLoaded = self.imagesLoaded + 1
                         var numberOfImages = (self.fetchedResultsController.sections![0] as! NSFetchedResultsSectionInfo).numberOfObjects

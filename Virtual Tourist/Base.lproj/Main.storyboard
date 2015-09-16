@@ -71,7 +71,11 @@
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="u5M-8D-A6y"/>
-                                    <barButtonItem title="New Collection" id="Gf0-VS-gG3"/>
+                                    <barButtonItem title="New Collection" id="Gf0-VS-gG3">
+                                        <connections>
+                                            <action selector="collectionButtonTouched:" destination="9IK-2T-ZLU" id="BWU-pZ-M3x"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="WTh-Hc-zDP"/>
                                 </items>
                             </toolbar>

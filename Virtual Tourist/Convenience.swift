@@ -43,7 +43,7 @@ extension Client {
                             let photo = photos[self.count]
                             resultsDic.append(photo)
                             self.count = self.count + 1
-                        } while (self.count % 12 != 0)
+                        } while (self.count % 24 != 0)
                         
                         completionHandler(success: true, dictionary: resultsDic, errorString: nil)
                     }
