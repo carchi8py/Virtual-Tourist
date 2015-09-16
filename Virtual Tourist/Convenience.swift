@@ -11,11 +11,12 @@ import MapKit
 
 extension Client {
     
-    func getImageFromFlicker(latitude: CLLocationDegrees, longitude: CLLocationDegrees, completionHandler: (success: Bool, dictionary: [[String: AnyObject]]?, errorString: String?) -> Void) {
+    func getImageFromFlicker(latitude: CLLocationDegrees, longitude: CLLocationDegrees, boxSize: Double, completionHandler: (success: Bool, dictionary: [[String: AnyObject]]?, errorString: String?) -> Void) {
         
         //Create a boundedBox so limit the number of picture we get
+        println("The box size is \(boxSize)")
         var boundedBox: String {
-            return "\(longitude - 0.01),\(latitude - 0.01),\(longitude + 0.01),\(latitude + 0.01)"
+            return "\(longitude - boxSize),\(latitude - boxSize),\(longitude + boxSize),\(latitude + boxSize)"
         }
         
         /* 1. Set the parameters */
@@ -37,15 +38,22 @@ extension Client {
             } else {
                 if let photoDic = JSONResults.valueForKey(JSONResponseKeys.Photos) as? [String: AnyObject] {
                     if let photos = photoDic[JSONResponseKeys.Photo] as? [[String:AnyObject]] {
-                        var resultsDic = [[String:AnyObject]]()
+                        println("W00t")
+                        if (photos.count < 24) {
+                            println("HI")
+                            completionHandler(success: false, dictionary: nil, errorString: "Could not complete request \(error)")
+                        } else {
+                            println(photos.count)
+                            var resultsDic = [[String:AnyObject]]()
                         
-                        do {
-                            let photo = photos[self.count]
-                            resultsDic.append(photo)
-                            self.count = self.count + 1
-                        } while (self.count % 24 != 0)
+                            do {
+                                let photo = photos[self.count]
+                                resultsDic.append(photo)
+                                self.count = self.count + 1
+                            } while (self.count % 24 != 0)
                         
                         completionHandler(success: true, dictionary: resultsDic, errorString: nil)
+                        }
                     }
                 } else {
                     completionHandler(success: false, dictionary: nil, errorString: "Could not complete request \(error)")
