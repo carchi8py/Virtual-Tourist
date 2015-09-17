@@ -44,7 +44,7 @@ class Photo: NSManagedObject {
         get {
             return Client.Caches.imageCache.imageWithIdentifier(photoID)
         } set {
-            Client.Caches.imageCache.storeImage(image, identifier: photoID)
+            Client.Caches.imageCache.storeImage(newValue, identifier: photoID)
         }
     }
 }
