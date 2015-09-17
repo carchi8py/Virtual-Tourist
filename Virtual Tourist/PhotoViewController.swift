@@ -36,11 +36,11 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
         super.viewWillAppear(animated)
         
         //Show nav bar
-        self.navigationController?.navigationBarHidden = false
+        navigationController?.navigationBarHidden = false
         
         if pin.photos.isEmpty {
             Client.sharedInstance().count = 0
-            self.collectionButton.enabled = false
+            collectionButton.enabled = false
             getImages()
         }
     }
@@ -48,12 +48,12 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
     //When the New Collection button is push, delete old image, and grab new
     //ones from flickr
     @IBAction func collectionButtonTouched(sender: UIBarButtonItem) {
-        self.imagesLoaded = 0
-        self.collectionButton.enabled = false
-        if let photos = self.fetchedResultsController.fetchedObjects as? [Photo] {
+        imagesLoaded = 0
+        collectionButton.enabled = false
+        if let photos = fetchedResultsController.fetchedObjects as? [Photo] {
             for photo in photos {
                 Client.Caches.imageCache.clearImage(photo.photoID)
-                self.sharedContext.deleteObject(photo)
+                sharedContext.deleteObject(photo)
             }
         }
         getImages()
@@ -78,13 +78,13 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         //Changing the size of the cell depending on the width of the device
-        let imageDimension = self.view.frame.size.width / 3.33
+        let imageDimension = view.frame.size.width / 3.33
         return CGSizeMake(imageDimension, imageDimension)
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         //Setting the left and right inset for cells
-        let leftRightInset = self.view.frame.size.width / 57.0
+        let leftRightInset = view.frame.size.width / 57.0
         return UIEdgeInsetsMake(0, leftRightInset, 0, leftRightInset)
     }
     
@@ -161,17 +161,17 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
         }
         
         cell.image.image = image
-        self.collectionView.reloadItemsAtIndexPaths([indexPath])
+        collectionView.reloadItemsAtIndexPaths([indexPath])
     }
     
     /***** Collection View *****/
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return self.fetchedResultsController.sections?.count ?? 0
+        return fetchedResultsController.sections?.count ?? 0
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let sectionInfo = self.fetchedResultsController.sections![section] as! NSFetchedResultsSectionInfo
+        let sectionInfo = fetchedResultsController.sections![section] as! NSFetchedResultsSectionInfo
     
         return sectionInfo.numberOfObjects
     }
@@ -196,7 +196,7 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
         alertControllerForDeletingPhoto.addAction(UIAlertAction(title: "Delete Photo", style: UIAlertActionStyle.Destructive, handler: deletePhoto))
         alertControllerForDeletingPhoto.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
         
-        self.presentViewController(alertControllerForDeletingPhoto, animated: true, completion: nil)
+        presentViewController(alertControllerForDeletingPhoto, animated: true, completion: nil)
     }
     
     /***** Getting images from Flickr *****/
@@ -282,11 +282,11 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
     func deletePhoto(sender: UIAlertAction!) -> Void {
         let index = currentIndex
         
-        let photo = self.fetchedResultsController.objectAtIndexPath(index!) as! Photo
+        let photo = fetchedResultsController.objectAtIndexPath(index!) as! Photo
         Client.Caches.imageCache.clearImage(photo.photoID)
-        self.sharedContext.deleteObject(photo)
+        sharedContext.deleteObject(photo)
         CoreDataStackManager.sharedInstance().saveContext()
-        self.collectionView.reloadData()
+        collectionView.reloadData()
     }
     
     
