@@ -161,7 +161,7 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
         }
         
         cell.image.image = image
-        collectionView.reloadItemsAtIndexPaths([indexPath])
+        //collectionView.reloadItemsAtIndexPaths([indexPath])
     }
     
     /***** Collection View *****/
@@ -201,6 +201,18 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     /***** Getting images from Flickr *****/
     
+    func getPhotos(dictionary: [[String: AnyObject]]?) {
+        let photosDictionary = dictionary!
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            var photos = photosDictionary.map() { ( dictionary: [String: AnyObject]) -> Photo in
+                let photo = Photo(dictionary: dictionary, context: self.sharedContext)
+                photo.pin = self.pin
+                CoreDataStackManager.sharedInstance().saveContext()
+                return photo
+            }
+        })
+    }
+    
     // Start with a bound box of 0.001 by 0.001 and keep zooming out by a factor of 10 until
     // We get to a bound box of 1 by 1. If we can't find 24 picture at a 1 by 1 level return
     // an error to the user
@@ -212,57 +224,25 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
             (success, dictionary, errorString) -> Void in
             
             if success {
-                let photosDictionary = dictionary!
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    var photos = photosDictionary.map() { ( dictionary: [String: AnyObject]) -> Photo in
-                        let photo = Photo(dictionary: dictionary, context: self.sharedContext)
-                        photo.pin = self.pin
-                        CoreDataStackManager.sharedInstance().saveContext()
-                        return photo
-                    }
-                })
+                self.getPhotos(dictionary)
             } else {
                 Client.sharedInstance().getImageFromFlicker(latitude, longitude: longitude, boxSize: 0.01) {
                     (success, dictionary, errorString) -> Void in
                     
                     if success {
-                        let photosDictionary = dictionary!
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            var photos = photosDictionary.map() { ( dictionary: [String: AnyObject]) -> Photo in
-                                let photo = Photo(dictionary: dictionary, context: self.sharedContext)
-                                photo.pin = self.pin
-                                CoreDataStackManager.sharedInstance().saveContext()
-                                return photo
-                            }
-                        })
+                        self.getPhotos(dictionary)
                     } else {
                         Client.sharedInstance().getImageFromFlicker(latitude, longitude: longitude, boxSize: 0.1) {
                             (success, dictionary, errorString) -> Void in
                             
                             if success {
-                                let photosDictionary = dictionary!
-                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                    var photos = photosDictionary.map() { ( dictionary: [String: AnyObject]) -> Photo in
-                                        let photo = Photo(dictionary: dictionary, context: self.sharedContext)
-                                        photo.pin = self.pin
-                                        CoreDataStackManager.sharedInstance().saveContext()
-                                        return photo
-                                    }
-                                })
+                                self.getPhotos(dictionary)
                             } else {
                                 Client.sharedInstance().getImageFromFlicker(latitude, longitude: longitude, boxSize: 1.0) {
                                     (success, dictionary, errorString) -> Void in
                                     
                                     if success {
-                                        let photosDictionary = dictionary!
-                                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                            var photos = photosDictionary.map() { ( dictionary: [String: AnyObject]) -> Photo in
-                                                let photo = Photo(dictionary: dictionary, context: self.sharedContext)
-                                                photo.pin = self.pin
-                                                CoreDataStackManager.sharedInstance().saveContext()
-                                                return photo
-                                            }
-                                        })
+                                        self.getPhotos(dictionary)
                                     } else {
                                         var alert = UIAlertController(title: "Failed to get images", message: "Was unable to get images from Flickr", preferredStyle: UIAlertControllerStyle.Alert)
                                         alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
