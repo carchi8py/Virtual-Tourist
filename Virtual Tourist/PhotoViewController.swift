@@ -131,13 +131,9 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
     /***** Configure Cell *****/
     
     func configureCell(cell: PhotoCell, photo: Photo, indexPath: NSIndexPath) {
-        cell.imageActivity.hidden = false
-        cell.imageActivity.startAnimating()
         var image = UIImage()
         
         if let localImage = photo.image {
-            cell.imageActivity.stopAnimating()
-            cell.imageActivity.hidden = true
             image = localImage
         } else {
             let task = Client.sharedInstance().taskForImage(photo.photoUrl, completionHandler: {(imageData, downloadError) -> Void in
@@ -146,9 +142,7 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
                     photo.image = image
                     
                     dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                        cell.imageActivity.stopAnimating()
-                        cell.imageActivity.hidden = true
-                        cell.image.image = image
+                        cell.setOurImage(image!)
                         self.imagesLoaded = self.imagesLoaded + 1
                         var numberOfImages = (self.fetchedResultsController.sections![0] as! NSFetchedResultsSectionInfo).numberOfObjects
                         
@@ -161,7 +155,7 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
         }
         
         cell.image.image = image
-        //collectionView.reloadItemsAtIndexPaths([indexPath])
+        collectionView.reloadItemsAtIndexPaths([indexPath])
     }
     
     /***** Collection View *****/
@@ -171,17 +165,29 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        println("Enter")
         let sectionInfo = fetchedResultsController.sections![section] as! NSFetchedResultsSectionInfo
     
+        let expectedPics:Int = 24
+            println(expectedPics)
+            println(sectionInfo.numberOfObjects)
+            if (expectedPics > sectionInfo.numberOfObjects)
+            {
+                println("Returning 24")
+                //collectionView.reloadData()
+                return sectionInfo.numberOfObjects
+        }
         return sectionInfo.numberOfObjects
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let CellIdentifier = "PhotoCell"
-        
-        let photo = fetchedResultsController.objectAtIndexPath(indexPath) as! Photo
+        println("In here")
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CellIdentifier, forIndexPath: indexPath) as! PhotoCell
+        cell.removeImage()
+        
+        let photo = fetchedResultsController.objectAtIndexPath(indexPath) as! Photo
         
         configureCell(cell, photo: photo, indexPath: indexPath)
         
