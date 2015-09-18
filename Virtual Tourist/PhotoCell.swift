@@ -16,6 +16,7 @@ class PhotoCell: UICollectionViewCell {
     func setOurImage(image:UIImage){
         
         self.imageActivity.stopAnimating()
+        self.imageActivity.hidden = true
         self.image.image = image
         
     }
@@ -23,6 +24,7 @@ class PhotoCell: UICollectionViewCell {
     func removeImage(){
         
         self.image.image = nil
+        self.imageActivity.hidden = false
         self.imageActivity.startAnimating()
         
     }
