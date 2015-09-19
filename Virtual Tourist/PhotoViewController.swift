@@ -114,11 +114,9 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
             for (type, index) in self.changes {
                 switch type {
                 case .Insert:
-                    //self.collectionView.insertItemsAtIndexPaths([index])
-                    self.collectionView.reloadItemsAtIndexPaths([index])
+                    self.collectionView.insertItemsAtIndexPaths([index])
                 case .Delete:
-                    //self.collectionView.deleteItemsAtIndexPaths([index])
-                    self.collectionView.reloadItemsAtIndexPaths([index])
+                    self.collectionView.deleteItemsAtIndexPaths([index])
                 default:
                     continue
                 }
@@ -133,9 +131,13 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
     /***** Configure Cell *****/
     
     func configureCell(cell: PhotoCell, photo: Photo, indexPath: NSIndexPath) {
+        cell.imageActivity.hidden = false
+        cell.imageActivity.startAnimating()
         var image = UIImage()
         
         if let localImage = photo.image {
+            cell.imageActivity.stopAnimating()
+            cell.imageActivity.hidden = true
             image = localImage
         } else {
             let task = Client.sharedInstance().taskForImage(photo.photoUrl, completionHandler: {(imageData, downloadError) -> Void in
@@ -144,9 +146,10 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
                     photo.image = image
                     
                     dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                        cell.setOurImage(image!)
+                        cell.imageActivity.stopAnimating()
+                        cell.imageActivity.hidden = true
+                        cell.image.image = image
                         self.imagesLoaded = self.imagesLoaded + 1
-                        println("Image set")
                         var numberOfImages = (self.fetchedResultsController.sections![0] as! NSFetchedResultsSectionInfo).numberOfObjects
                         
                         if self.imagesLoaded == numberOfImages {
@@ -158,7 +161,6 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
         }
         
         cell.image.image = image
-        //collectionView.reloadData()
         //collectionView.reloadItemsAtIndexPaths([indexPath])
     }
     
@@ -170,32 +172,18 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let sectionInfo = fetchedResultsController.sections![section] as! NSFetchedResultsSectionInfo
-        println("In Number of items")
     
-        let expectedPics:Int = 24
-            if (expectedPics > sectionInfo.numberOfObjects)
-            {
-                //collectionView.reloadData()
-                return expectedPics
-        }
-        //collectionView.reloadData()
         return sectionInfo.numberOfObjects
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let CellIdentifier = "PhotoCell"
-        println("In Cell for item")
+        
+        let photo = fetchedResultsController.objectAtIndexPath(indexPath) as! Photo
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CellIdentifier, forIndexPath: indexPath) as! PhotoCell
-        cell.removeImage()
         
-        let fetchedNumber = self.fetchedResultsController.fetchedObjects!.count
-        if (fetchedNumber >= indexPath.row + 1 ) {
-            let photo = fetchedResultsController.objectAtIndexPath(indexPath) as! Photo
-            
-            configureCell(cell, photo: photo, indexPath: indexPath)
-            collectionView.reloadItemsAtIndexPaths([indexPath])
-        }
+        configureCell(cell, photo: photo, indexPath: indexPath)
         
         return cell
     }

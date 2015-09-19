@@ -13,7 +13,6 @@ import CoreData
 @objc(Photo)
 
 class Photo: NSManagedObject {
-
     struct Keys {
         static let PhotoID = "id"
         static let PhotoTitle = "title"
