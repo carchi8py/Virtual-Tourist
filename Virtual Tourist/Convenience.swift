@@ -27,10 +27,13 @@ extension Client {
             Parameters.SafeSearch: Constants.SafeSearch,
             Parameters.Extras: Constants.Extras,
             Parameters.Format: Constants.Format,
-            Parameters.NoJSONCallBack: Constants.NoJSONCallBack
+            Parameters.NoJSONCallBack: Constants.NoJSONCallBack,
+            Parameters.PerPage: Constants.PerPage,
+            Parameters.Page: self.page
         ]
         /* 2/3. Build the URL and configure the request */
         /* 4. Make the request */
+        self.count = 0
         let task = taskForFlickrGet(parameters) { (JSONResults, error) -> Void in
             
             if let error = error {
@@ -49,6 +52,7 @@ extension Client {
                                 resultsDic.append(photo)
                                 self.count = self.count + 1
                             } while (self.count % 24 != 0)
+                            self.page = self.page + 1
                         
                         completionHandler(success: true, dictionary: resultsDic, errorString: nil)
                         }

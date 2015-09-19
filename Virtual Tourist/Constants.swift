@@ -16,6 +16,7 @@ extension Client {
         static let Extras = "url_m"
         static let Format = "json"
         static let NoJSONCallBack = "1"
+        static let PerPage = "24"
     }
     
     struct Parameters {
@@ -26,6 +27,8 @@ extension Client {
         static let Extras = "extras"
         static let Format = "format"
         static let NoJSONCallBack = "nojsoncallback"
+        static let PerPage = "per_page"
+        static let Page = "page"
     }
     
     struct Methods {

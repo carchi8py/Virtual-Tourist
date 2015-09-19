@@ -15,6 +15,7 @@ class Client: NSObject {
     
     // Stored count of the number of picture we have gotten from flickr
     var count = 0
+    var page = 1
     
     override init() {
         session = NSURLSession.sharedSession()
