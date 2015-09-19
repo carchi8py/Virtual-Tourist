@@ -143,7 +143,7 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
             let task = Client.sharedInstance().taskForImage(photo.photoUrl, completionHandler: {(imageData, downloadError) -> Void in
                 if let data = imageData {
                     let image = UIImage(data: data)
-                    photo.image = image
+                    self.sharedContext.performBlockAndWait({ photo.image = image })
                     
                     dispatch_async(dispatch_get_main_queue()) { () -> Void in
                         cell.imageActivity.stopAnimating()
